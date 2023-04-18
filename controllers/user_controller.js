@@ -1,3 +1,6 @@
+const User = require("../models/user");
+
+
 module.exports.profile = (req, res) => {
     return res.render('user', {
         title: "User Profile"
@@ -19,8 +22,35 @@ module.exports.signIn = (req, res) => {
 }
 
 // Get the sign up data
-module.exports.create = (req, res) => {
-    // TODO later
+module.exports.create = async (req, res) => {
+
+    if (req.body.password != req.body.c_password) {
+        console.log('Please enter correct password')
+        return res.redirect('back');
+    }
+
+    const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    })
+
+    let user1 = await User.findOne({ email: user.email })
+
+    // if (err) { console.log("Error in finding user in signing up"); return }
+
+
+
+    if (!user1) {
+
+        await user.save().then(() => res.redirect('/user/sign-in'))
+            .catch(() => console.log('Error in creating user while signing up'))
+
+    }
+    else {
+        console.log('User alredy Existed')
+        return res.redirect('back');
+    }
 }
 
 // Sign in and create a session for ther user

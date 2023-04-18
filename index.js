@@ -1,9 +1,16 @@
 const express = require('express')
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = 8000;
 
 // MongoDB imported
 const db = require('./config/mongoose');
+
+// Mongodb middleware
+app.use(express.urlencoded());
+
+// Store cookie
+app.use(cookieParser());
 
 const expressLayout = require('express-ejs-layouts');
 

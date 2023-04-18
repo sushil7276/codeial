@@ -2,6 +2,9 @@ const express = require('express')
 const app = express();
 const port = 8000;
 
+// MongoDB imported
+const db = require('./config/mongoose');
+
 const expressLayout = require('express-ejs-layouts');
 
 app.use(express.static('./assets'));

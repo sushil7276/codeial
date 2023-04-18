@@ -24,6 +24,7 @@ module.exports.signIn = (req, res) => {
 // Get the sign up data
 module.exports.create = async (req, res) => {
 
+    // checking password
     if (req.body.password != req.body.c_password) {
         console.log('Please enter correct password')
         return res.redirect('back');
@@ -35,12 +36,11 @@ module.exports.create = async (req, res) => {
         password: req.body.password
     })
 
-    let user1 = await User.findOne({ email: user.email })
-
-    // if (err) { console.log("Error in finding user in signing up"); return }
-
+    // Check Email is already present or not
+    let user1 = await User.findOne({ email: user.email }).catch(()=> console.log("Error in finding user in signing up"))
 
 
+    // If user in not present then Create new user
     if (!user1) {
 
         await user.save().then(() => res.redirect('/user/sign-in'))

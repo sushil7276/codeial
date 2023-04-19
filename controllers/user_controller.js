@@ -37,11 +37,11 @@ module.exports.create = async (req, res) => {
     })
 
     // Check Email is already present or not
-    let user1 = await User.findOne({ email: user.email }).catch(()=> console.log("Error in finding user in signing up"))
+    let userSave = await User.findOne({ email: user.email }).catch(() => console.log("Error in finding user in signing up"))
 
 
     // If user in not present then Create new user
-    if (!user1) {
+    if (!userSave) {
 
         await user.save().then(() => res.redirect('/user/sign-in'))
             .catch(() => console.log('Error in creating user while signing up'))
@@ -54,6 +54,11 @@ module.exports.create = async (req, res) => {
 }
 
 // Sign in and create a session for ther user
-module.exports.createSession = (req, res) => {
-    // TODO later
+module.exports.createSession = async (req, res) => {
+
+    let user = await User.findOne({ email: req.body.email, password: req.body.password })
+
+    if (user){
+        
+    }
 }

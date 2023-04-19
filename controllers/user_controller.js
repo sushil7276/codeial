@@ -1,10 +1,29 @@
 const User = require("../models/user");
 
 
-module.exports.profile = (req, res) => {
-    return res.render('user', {
-        title: "User Profile"
-    })
+module.exports.profile = async (req, res) => {
+
+    if (req.cookies.user_id) {
+
+        const user = await User.findById(req.cookies.user_id);
+
+
+
+        if (user) {
+            return res.render('user', {
+                title: "User Profile",
+                user: user
+            })
+        }
+        else {
+            return res.redirect('/user/sign-in');
+        }
+    }
+    else {
+
+        return res.redirect('/user/sign-in');
+    }
+
 }
 
 // Render the sign up page
@@ -61,7 +80,12 @@ module.exports.createSession = async (req, res) => {
         console.log("Finding Error");
     })
 
+
+
     if (user) {
+
+        // id pass to cookies
+        res.cookie('user_id', user._id);
         
         // If user ther found then go to profile page
         return res.redirect('/user/profile');

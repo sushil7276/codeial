@@ -56,9 +56,20 @@ module.exports.create = async (req, res) => {
 // Sign in and create a session for ther user
 module.exports.createSession = async (req, res) => {
 
-    let user = await User.findOne({ email: req.body.email, password: req.body.password })
+    // Checking user
+    let user = await User.findOne({ email: req.body.email, password: req.body.password }).catch(() => {
+        console.log("Finding Error");
+    })
 
-    if (user){
+    if (user) {
         
+        // If user ther found then go to profile page
+        return res.redirect('/user/profile');
+    }
+    else {
+
+        // If user not found the back to same page
+        console.log('User Not found')
+        return res.redirect('back');
     }
 }

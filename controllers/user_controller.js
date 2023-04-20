@@ -40,7 +40,6 @@ module.exports.create = async (req, res) => {
 
     // checking password
     if (req.body.password != req.body.c_password) {
-        console.log('Please enter correct password')
         return res.redirect('back');
     }
 
@@ -95,4 +94,17 @@ module.exports.createSession = async (req, res) => {
     */
 
     return res.redirect('/');
+}
+
+// Sign out 
+module.exports.destroySession = function (req, res, next) {
+    req.logout(function (err) {
+        
+        if (err) {
+            return next(err);
+        }
+
+        return res.redirect('/');
+    });
+
 }

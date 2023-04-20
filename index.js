@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const port = 5000;
 
+const expressLayout = require('express-ejs-layouts');
+
 // MongoDB imported
 const db = require('./config/mongoose');
 
@@ -10,6 +12,8 @@ const db = require('./config/mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const { default: mongoose } = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
 
 // Mongodb middleware
 app.use(express.urlencoded());
@@ -17,7 +21,6 @@ app.use(express.urlencoded());
 // Store cookie
 app.use(cookieParser());
 
-const expressLayout = require('express-ejs-layouts');
 
 app.use(express.static('./assets'));
 app.use(expressLayout);
@@ -31,7 +34,7 @@ app.set("layout extractScripts", true)
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-
+// mongo store is used to store the session cookie in the db
 app.use(session({
     name: 'codeial',
     // TODO change the secret before deployment in production mode
@@ -40,7 +43,16 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
-    }
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        },
+        function (err) {
+            console.log(err || 'Connect-mongodb setup ok');
+        }
+    )
 }));
 
 app.use(passport.initialize());

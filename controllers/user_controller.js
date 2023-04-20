@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 module.exports.profile = async (req, res) => {
 
+    /*
     if (req.cookies.user_id) {
 
         const user = await User.findById(req.cookies.user_id);
@@ -23,6 +24,11 @@ module.exports.profile = async (req, res) => {
 
         return res.redirect('/user/sign-in');
     }
+    */
+
+    return res.render('user', {
+        title: 'User Profile'
+    })
 
 }
 
@@ -75,6 +81,7 @@ module.exports.create = async (req, res) => {
 // Sign in and create a session for ther user
 module.exports.createSession = async (req, res) => {
 
+    /*
     // Checking user
     let user = await User.findOne({ email: req.body.email, password: req.body.password }).catch(() => {
         console.log("Finding Error");
@@ -96,4 +103,7 @@ module.exports.createSession = async (req, res) => {
         console.log('User Not found')
         return res.redirect('back');
     }
+    */
+
+    return res.redirect('/');
 }

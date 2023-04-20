@@ -3,29 +3,6 @@ const User = require("../models/user");
 
 module.exports.profile = async (req, res) => {
 
-    /*
-    if (req.cookies.user_id) {
-
-        const user = await User.findById(req.cookies.user_id);
-
-
-
-        if (user) {
-            return res.render('user', {
-                title: "User Profile",
-                user: user
-            })
-        }
-        else {
-            return res.redirect('/user/sign-in');
-        }
-    }
-    else {
-
-        return res.redirect('/user/sign-in');
-    }
-    */
-
     return res.render('user', {
         title: 'User Profile'
     })
@@ -34,6 +11,12 @@ module.exports.profile = async (req, res) => {
 
 // Render the sign up page
 module.exports.signUp = (req, res) => {
+
+    // if we are alredy sign in then do not opent this page
+    if (req.isAuthenticated()) {
+        return res.redirect('/user/profile');
+    }
+
     return res.render('user_sign_up', {
         title: "Codeial | Sign Up"
     })
@@ -41,6 +24,12 @@ module.exports.signUp = (req, res) => {
 
 // Render the sign In page
 module.exports.signIn = (req, res) => {
+
+    // if we are alredy sign in then do not opent this page
+    if (req.isAuthenticated()) {
+        return res.redirect('/user/profile');
+    }
+
     return res.render('user_sign_in', {
         title: "Codeial | Sign In"
     })

@@ -1,7 +1,11 @@
-module.exports.home = (req, res) => {
-    // console.log(req.cookies);
-    // res.cookie('user_id', 25);
+const Post = require('../models/post');
+
+module.exports.home = async (req, res) => {
+
+    // Populate the user of each post
+    const post = await Post.find({}).populate('user').exec()
     return res.render('home', {
-        title: "Home"
+        title: "Codeial | Home",
+        post
     })
 }

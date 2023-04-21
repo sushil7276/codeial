@@ -4,7 +4,7 @@ const passport = require('passport');
 const postController = require('../controllers/post_controller');
 
 // check user is signIn (using passport authentication)
-router.post('/create-post',passport.checkAuthentication, postController.createComment);
+router.post('/create',passport.checkAuthentication, postController.create);
 
 
 module.exports = router;

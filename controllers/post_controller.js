@@ -2,7 +2,7 @@ const Post = require('../models/post');
 
 
 
-module.exports.createComment = async (req, res) => {
+module.exports.create = async (req, res) => {
 
     // if we are alredy sign in then do not opent this page
     if (req.isAuthenticated()) {

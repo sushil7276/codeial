@@ -19,11 +19,14 @@ module.exports.create = async (req, res) => {
         await postSave.save()
             .catch(() => console.log('Posting Error..'))
 
+        req.flash('success', "Post Created Successfully")
         return res.redirect('back');
 
 
     } catch (error) {
-        console.log('Error: ', error);
+        req.flash('error', error)
+
+        return res.redirect('back');
     }
 
 }
@@ -45,6 +48,7 @@ module.exports.destroy = async (req, res) => {
             // also also all comments deleted
             await Comment.deleteMany({ post: req.params.id });
 
+            req.flash('success', "Delete Post successfully");
             return res.redirect('back');
         }
         else {
@@ -52,7 +56,8 @@ module.exports.destroy = async (req, res) => {
         }
 
     } catch (error) {
-        console.log('Error: ', error);
+        req.flash('error', error);
+        return res.redirect('back');
     }
 
 

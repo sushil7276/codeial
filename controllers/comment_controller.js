@@ -27,13 +27,14 @@ module.exports.create = async (req, res) => {
             post.comments.push(saveComment);
             // post save adding comment
             await post.save();
+
+            req.flash('success', "Comment Created Successfully")
             res.redirect('/')
 
         }
 
     } catch (error) {
-        console.log('Error: ', error);
-
+        req.flash('Error: ', error);
     }
 }
 
@@ -56,14 +57,17 @@ module.exports.distroy = async (req, res) => {
             // Also delete comment on postDB
             await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } });
 
+            req.flash('success', "Comment Deleted Successfully")
             return res.redirect('back');
         }
         else {
+            
             return res.redirect('back');
         }
 
 
     } catch (error) {
+        req.flash('Error', error)
         console.log('Error: ', error);
     }
 

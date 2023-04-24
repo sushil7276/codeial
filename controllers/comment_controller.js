@@ -6,14 +6,17 @@ module.exports.create = async (req, res) => {
     // finding post id by name in html page
     let post = await Post.findById(req.body.post)
 
+    // Finding user object which one is sign in
+    let userId = await req.user;
+
     // if post id present then save comment
     if (post) {
         let comment = new Comment({
             content: req.body.content,
             post: req.body.post,
-            user: post.user
+            user: userId.id
         })
-     
+
         // save comment
         let saveComment = await comment.save()
 

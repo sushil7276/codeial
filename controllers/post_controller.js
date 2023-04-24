@@ -24,7 +24,7 @@ module.exports.create = async (req, res) => {
                 data: {
                     post: postSave
                 },
-                message:"Post Created"
+                message: "Post Created"
             })
         }
 
@@ -56,6 +56,20 @@ module.exports.destroy = async (req, res) => {
 
             // also also all comments deleted
             await Comment.deleteMany({ post: req.params.id });
+
+            // deleteing using ajax and send response in json
+            if (req.xhr) {
+
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    },
+                    message: 'Post Deleted'
+                })
+            }
+
+
+
 
             req.flash('success', "Delete Post successfully");
             return res.redirect('back');

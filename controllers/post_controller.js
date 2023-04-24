@@ -19,6 +19,15 @@ module.exports.create = async (req, res) => {
         await postSave.save()
             .catch(() => console.log('Posting Error..'))
 
+        if (req.xhr) {
+            return res.status(200).json({
+                data: {
+                    post: postSave
+                },
+                message:"Post Created"
+            })
+        }
+
         req.flash('success', "Post Created Successfully")
         return res.redirect('back');
 

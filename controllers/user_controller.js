@@ -111,3 +111,15 @@ module.exports.destroySession = function (req, res, next) {
     });
 
 }
+
+// Update user
+module.exports.update = async (req, res) => {
+    let userId = await req.user
+    if (userId.id == req.params.id) {
+        await User.findByIdAndUpdate(req.params.id, req.body)
+            .then(() => res.redirect('back'));
+    }
+    else {
+        return res.status(401).send('Unauthorized');
+    }
+}

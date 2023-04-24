@@ -1,3 +1,4 @@
+const { Model } = require('mongoose');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 
@@ -27,4 +28,29 @@ module.exports.create = async (req, res) => {
         res.redirect('/')
 
     }
+}
+
+// Delete comment
+module.exports.distroy = async (req, res) => {
+
+    // finding comment id
+    let comment = await Comment.findById(req.params.id);
+
+    
+    // Finding user object which one is sign in
+    let userId = await req.user;
+    if (comment.user == userId.id) {
+        let postId = comment.post;
+      
+        // delete comment
+        await comment.deleteOne();
+
+        // Also delete comment on postDB
+        await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } })
+            .then(() => res.redirect('back'))
+    }
+    else {
+        return res.redirect('back');
+    }
+
 }

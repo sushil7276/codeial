@@ -3,8 +3,11 @@ const User = require("../models/user");
 
 module.exports.profile = async (req, res) => {
 
+    const user = await User.findById(req.params.id);
+
     return res.render('user', {
-        title: 'User Profile'
+        title: 'User Profile',
+        profile_user: user
     })
 
 }
@@ -99,7 +102,7 @@ module.exports.createSession = async (req, res) => {
 // Sign out 
 module.exports.destroySession = function (req, res, next) {
     req.logout(function (err) {
-        
+
         if (err) {
             return next(err);
         }

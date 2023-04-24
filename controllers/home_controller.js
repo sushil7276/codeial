@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 module.exports.home = async (req, res) => {
 
@@ -11,8 +12,14 @@ module.exports.home = async (req, res) => {
                 path: 'user'
             }
         }).exec()
+
+    // creating user profile links
+    let user = await User.find({})
+
     return res.render('home', {
         title: "Codeial | Home",
-        post
+        post,
+        all_users: user
     })
+
 }

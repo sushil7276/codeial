@@ -5,44 +5,55 @@ const Comment = require('../models/comment');
 
 module.exports.create = async (req, res) => {
 
-    // if we are alredy sign in then do not opent this page
-    if (req.isAuthenticated()) {
+    try {
 
+        // find user id
         let userId = await req.user;
+
         const postSave = new Post({
             content: req.body.content,
             user: userId.id
         })
 
+        // save post in DB
         await postSave.save()
             .catch(() => console.log('Posting Error..'))
 
         return res.redirect('back');
 
+
+    } catch (error) {
+        console.log('Error: ', error);
     }
 
-    return res.render('user_sign_in', {
-        title: "Codeial | Sign In"
-    })
 }
 
 
 module.exports.destroy = async (req, res) => {
 
-    // finding postId
-    const postId = await Post.findById(req.params.id);
+    try {
 
-    // Finding userId
-    let userId = await req.user;
-  
-    if (postId.user == userId.id) {
-        await postId.deleteOne();
+        // finding postId
+        let postId = await Post.findById(req.params.id);
 
-        // also also all comments deleted
-        await Comment.deleteMany({ post: req.params.id })
-            .then(() => res.redirect('back'))
+        // Finding userId
+        let userId = await req.user;
+
+        if (postId.user == userId.id) {
+            await postId.deleteOne();
+
+            // also also all comments deleted
+            await Comment.deleteMany({ post: req.params.id });
+
+            return res.redirect('back');
+        }
+        else {
+            return res.redirect('back');
+        }
+
+    } catch (error) {
+        console.log('Error: ', error);
     }
-    else {
-        return res.redirect('back');
-    }
+
+
 }

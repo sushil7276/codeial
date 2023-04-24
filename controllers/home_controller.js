@@ -3,23 +3,29 @@ const User = require('../models/user');
 
 module.exports.home = async (req, res) => {
 
-    // Populate the user of each post
-    const post = await Post.find({})
-        .populate('user')
-        .populate({
-            path: 'comments',
-            populate: {
-                path: 'user'
-            }
-        }).exec()
+    try {
+        // Populate the user of each post
+        const post = await Post.find({})
+            .populate('user')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user'
+                }
+            });
 
-    // creating user profile links
-    let user = await User.find({})
+        // creating user profile links
+        let user = await User.find({})
 
-    return res.render('home', {
-        title: "Codeial | Home",
-        post,
-        all_users: user
-    })
+        return res.render('home', {
+            title: "Codeial | Home",
+            post,
+            all_users: user
+        });
+
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+
 
 }

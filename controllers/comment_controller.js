@@ -8,14 +8,14 @@ module.exports.create = async (req, res) => {
 
     // if post id present then save comment
     if (post) {
-        let commnet = new Comment({
+        let comment = new Comment({
             content: req.body.content,
             post: req.body.post,
-            user: req.user._id
+            user: post.user
         })
-
+     
         // save comment
-        let saveComment = await commnet.save()
+        let saveComment = await comment.save()
 
         // comment push to post(array)
         post.comments.push(saveComment);

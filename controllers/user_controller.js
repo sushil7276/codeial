@@ -139,19 +139,45 @@ module.exports.destroySession = function (req, res, next) {
 // Update user
 module.exports.update = async (req, res) => {
 
-    try {
 
-        let userId = await req.user
-        if (userId.id == req.params.id) {
-            await User.findByIdAndUpdate(req.params.id, req.body)
-                .then(() => res.redirect('back'));
+
+    let userId = await req.user
+    if (userId.id == req.params.id) {
+
+        try {
+
+            let user = await User.findById(req.params.id);
+
+            User.uploadedAvatar(req, res, async (err) => {
+                if (err) { console.log('**** Multer Error: ', err) }
+
+                user.name = req.body.name;
+                user.email = req.body.email;
+
+                if (req.file) {
+                    // This is saving the path of the uploaded file into the avatar field in the user
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                    console.log(user.avatar)
+                }
+
+                await user.save();
+                return res.redirect('back');
+            })
+
+
+            // await User.findByIdAndUpdate(req.params.id, req.body)
+            //     .then(() => res.redirect('back'));
         }
-        else {
-            return res.status(401).send('Unauthorized');
+        catch (error) {
+            req.flash('error', error);
+            return res.redirect('back');
         }
 
-    } catch (error) {
-        console.log('Error: ', error);
     }
+    else {
+        req.flash('error', 'Unauthorized');
+        return res.status(401).send('Unauthorized');
+    }
+
 
 }

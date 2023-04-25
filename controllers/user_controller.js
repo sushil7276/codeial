@@ -157,7 +157,6 @@ module.exports.update = async (req, res) => {
                 if (req.file) {
                     // This is saving the path of the uploaded file into the avatar field in the user
                     user.avatar = User.avatarPath + '/' + req.file.filename;
-                    console.log(user.avatar)
                 }
 
                 await user.save();

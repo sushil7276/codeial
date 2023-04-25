@@ -1,4 +1,6 @@
 const User = require("../models/user");
+const fs = require('fs');
+const path = require('path');
 
 
 module.exports.profile = async (req, res) => {
@@ -93,35 +95,14 @@ module.exports.create = async (req, res) => {
 
 }
 
+
 // Sign in and create a session for ther user
 module.exports.createSession = async (req, res) => {
 
-    /*
-    // Checking user
-    let user = await User.findOne({ email: req.body.email, password: req.body.password }).catch(() => {
-        console.log("Finding Error");
-    })
-
-
-
-    if (user) {
-
-        // id pass to cookies
-        res.cookie('user_id', user._id);
-        
-        // If user ther found then go to profile page
-        return res.redirect('/user/profile');
-    }
-    else {
-
-        // If user not found the back to same page
-        console.log('User Not found')
-        return res.redirect('back');
-    }
-    */
     req.flash('success', 'Logged in successfully');
     return res.redirect('/');
 }
+
 
 // Sign out 
 module.exports.destroySession = function (req, res, next) {
@@ -155,6 +136,14 @@ module.exports.update = async (req, res) => {
                 user.email = req.body.email;
 
                 if (req.file) {
+
+                    // if any file is not there then this code show error
+                    if (user.avatar) {
+
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
+
+
                     // This is saving the path of the uploaded file into the avatar field in the user
                     user.avatar = User.avatarPath + '/' + req.file.filename;
                 }

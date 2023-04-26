@@ -10,9 +10,9 @@ let opts = {
 }
 
 passport.use(new jWTStrategy(opts, async function (jwtPayLoad, done) {
-
+    console.log(jwtPayLoad._id)
     const user = await User.findById(jwtPayLoad._id)
-        .catch(err => console.log("Error in finding user from JWT"))
+        .catch(() => console.log("Error in finding user from JWT"))
 
     if (user) {
         return done(null, user);

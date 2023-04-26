@@ -45,4 +45,5 @@ module.exports.destroy = async (req, res) => {
             message: "Internal Server Error"
         })
     }
+
 }

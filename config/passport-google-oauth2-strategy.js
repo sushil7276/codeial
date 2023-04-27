@@ -8,7 +8,7 @@ const { error } = require('console');
 passport.use(new googleStrategy({
     clientID: "810265624267-ldtnqa75fs8a2ba56aoekcinu9m7nat0.apps.googleusercontent.com",
     clientSecret: "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",
-    callbackURL: "http://localhost:5000/users/auth/google/callback"
+    callbackURL: "http://localhost:5000/user/auth/google/callback"
 },
 
     async function (accessToken, refreshToken, profile, done) {

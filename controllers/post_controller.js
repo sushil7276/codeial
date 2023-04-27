@@ -68,11 +68,9 @@ module.exports.destroy = async (req, res) => {
                 })
             }
 
-
-
-
             req.flash('success', "Delete Post");
             return res.redirect('back');
+
         }
         else {
             return res.redirect('back');

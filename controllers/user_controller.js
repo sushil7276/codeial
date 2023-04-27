@@ -29,7 +29,7 @@ module.exports.signUp = (req, res) => {
 
         // if we are alredy sign in then do not opent this page
         if (req.isAuthenticated()) {
-            return res.redirect('/user/profile');
+            return res.redirect('/users/profile');
         }
 
         return res.render('user_sign_up', {
@@ -48,7 +48,7 @@ module.exports.signIn = (req, res) => {
 
     // if we are alredy sign in then do not opent this page
     if (req.isAuthenticated()) {
-        return res.redirect('/user/profile');
+        return res.redirect('/users/profile');
     }
 
     return res.render('user_sign_in', {
@@ -79,7 +79,7 @@ module.exports.create = async (req, res) => {
         // If user in not present then Create new user
         if (!userSave) {
 
-            await user.save().then(() => res.redirect('/user/sign-in'))
+            await user.save().then(() => res.redirect('/users/sign-in'))
                 .catch(() => console.log('Error in creating user while signing up'))
 
         }

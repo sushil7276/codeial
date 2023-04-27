@@ -6,8 +6,8 @@ const { error } = require('console');
 
 // Tell passport to use a new strategy for google login
 passport.use(new googleStrategy({
-    clientID: "810265624267-ldtnqa75fs8a2ba56aoekcinu9m7nat0.apps.googleusercontent.com",
-    clientSecret: "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",
+    clientID: "759935914855-cu98himu6btu1m2uccug0cq28li9iudd.apps.googleusercontent.com",
+    clientSecret: "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",
     callbackURL: "http://localhost:5000/user/auth/google/callback"
 },
 

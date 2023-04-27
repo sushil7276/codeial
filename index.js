@@ -10,9 +10,13 @@ const db = require('./config/mongoose');
 
 // used for session cookie
 const session = require('express-session');
+
+// Import passport autontication
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const passportJWT = require('./config/passport-jwt-strategy');
+const possportGoogle = require('./config/passport-google-oauth2-strategy');
+
 const { default: mongoose } = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');

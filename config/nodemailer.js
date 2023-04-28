@@ -8,9 +8,10 @@ let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false,
+    // Wichi id used in sending mail (this credential are put here) pass is (app pass key)
     auth: {
-        user: 'shil7276',
-        pass: '123456'
+        user: 'sushilbabar123@gmail.com',
+        pass: 'oveualawbbitaywx'
     }
 })
 
@@ -20,7 +21,7 @@ let renderTemplate = (data, relativePath) => {
         path.join(__dirname, '../views/mailers', relativePath),
         data,
         function (err, template) {
-            if (err) { console.log("Error in rendering template"); return }
+            if (err) { console.log("Error in rendering template", err); return }
 
             mailHTML = template;
         }

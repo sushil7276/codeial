@@ -1,6 +1,7 @@
 const { Model } = require('mongoose');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.create = async (req, res) => {
 
@@ -20,13 +21,28 @@ module.exports.create = async (req, res) => {
                 user: userId.id
             })
 
-            // save comment
-            let saveComment = await comment.save()
-
             // comment push to post(array)
-            post.comments.push(saveComment);
+            post.comments.push(comment);
+
             // post save adding comment
             await post.save();
+
+            // save comment
+            // let saveComment = await comment.save()
+            let saveComment = await comment.save();
+
+
+            commentsMailer.newComment(saveComment);
+
+            if (req.xhr) {
+
+                return res.status(200).json({
+                    data: {
+                        comment: saveComment
+                    },
+                    message: "Post Created"
+                })
+            }
 
             req.flash('success', "Comment Created Successfully")
             res.redirect('/')
@@ -61,7 +77,7 @@ module.exports.distroy = async (req, res) => {
             return res.redirect('back');
         }
         else {
-            
+
             return res.redirect('back');
         }
 

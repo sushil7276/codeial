@@ -2,6 +2,9 @@ const { Model } = require('mongoose');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const commentsMailer = require('../mailers/comments_mailer');
+const commentEmailWorker = require('../workers/comment_email_worker');
+const queue = require('../config/kue');
+
 
 module.exports.create = async (req, res) => {
 
@@ -32,7 +35,10 @@ module.exports.create = async (req, res) => {
             let saveComment = await comment.save();
 
 
-            commentsMailer.newComment(saveComment);
+            // commentsMailer.newComment(saveComment);
+            let job = queue.create('emails', comment).save()
+
+            console.log('job enqueued', job.id)
 
             if (req.xhr) {
 

@@ -22,6 +22,13 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const custumMware = require('./config/middleware');
 
+// Setup the chat server to be used with socket.io
+const chatServer = require('http').Server(app);
+const chatSockets = require('./config/chat_sockets').chatSockets(chatServer);
+chatServer.listen(4000);
+console.log('Chat Server is listening on port 4000')
+
+
 // Mongodb middleware
 app.use(express.urlencoded());
 

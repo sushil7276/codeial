@@ -33,7 +33,7 @@ console.log(`Chat Server is listening on port ${process.env.CHAT_PORT}`)
 
 
 // Mongodb middleware
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
 // Store cookie
 app.use(cookieParser());
@@ -44,7 +44,7 @@ app.use(express.static(env.asset_path));
 // Make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-app.use(logger(env.morgan.mode,env.morgan.options))
+app.use(logger(env.morgan.mode, env.morgan.options))
 
 app.use(expressLayout);
 
@@ -63,7 +63,7 @@ app.use(session({
     // TODO change the secret before deployment in production mode
     secret: env.session_cookie_key,
     saveUninitialized: false,
-    reSave: false,
+    resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
     },

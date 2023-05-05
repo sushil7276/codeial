@@ -4,7 +4,7 @@ const env = require('./config/environment');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
-const port = 5000;
+
 
 const expressLayout = require('express-ejs-layouts');
 
